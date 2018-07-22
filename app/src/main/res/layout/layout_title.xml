@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/title_panel"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/green">
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp"
+        android:padding="5dp"
+        android:visibility="invisible"
+        android:src="@drawable/ic_back" />
+    <TextView
+        android:id="@+id/top_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_toRightOf="@+id/back"
+        android:layout_toLeftOf="@+id/action_panel"
+        android:gravity="center_horizontal"
+        android:text="航空安全教育平台"
+        android:textColor="@color/title_text"
+        android:textSize="18dp" />
+
+    <RelativeLayout
+        android:id="@+id/action_panel"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="5dp">
+
+        <TextView
+            android:id="@+id/action2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:text="设置"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+             />
+    </RelativeLayout>
+
+</RelativeLayout>

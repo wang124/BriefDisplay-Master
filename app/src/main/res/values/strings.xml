@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">航空安全教育平台</string>
+
+    <string-array name="security_brief">
+        <item>国际民航</item>
+        <item>外军航空</item>
+    </string-array>
+</resources>
