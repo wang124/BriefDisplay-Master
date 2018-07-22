@@ -98,7 +98,7 @@ public class DisplayActivity extends Activity {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {//页面开始加载
             progressBar.setVisibility(View.VISIBLE);
-            nContent.setText("正在加载...");
+            nContent.setText("加载中...");
             nContent.setVisibility(View.VISIBLE);
         }
     };
