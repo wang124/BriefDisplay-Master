@@ -20,13 +20,14 @@ import butterknife.ButterKnife;
 public class DisplayActivity extends Activity {
     private String title;
     private String content;
-   // private WebView webView;
-  //  private ProgressBar progressBar;
+    private ProgressBar progressBar;
     //private PushDatabaseHelper pdbHelper;
     @BindView(R.id.top_title)
     TextView nTitle;
     @BindView(R.id.content)
     TextView nContent;
+    @BindView(R.id.urlview)
+    WebView webView;
 
 
     @Override
@@ -52,14 +53,14 @@ public class DisplayActivity extends Activity {
                 nContent.setVisibility(View.VISIBLE);
                 nContent.setText(content);
                 break;
-//            case 3:
-//                String title2 = intent.getStringExtra("title");
-//                nTitle.setText(title2);
-//                webView.setVisibility(View.VISIBLE);
-//                String url = intent.getStringExtra("linkAds");
-//                webView.setWebViewClient(webViewClient);
-//                webView.loadUrl(url);//加载url
-//                break;
+            case 3:
+                String title2 = intent.getStringExtra("title");
+                nTitle.setText(title2);
+                webView.setVisibility(View.VISIBLE);
+                String url = intent.getStringExtra("linkAds");
+                webView.setWebViewClient(webViewClient);
+                webView.loadUrl(url);//加载url
+                break;
             default:
                 break;
         }
@@ -88,17 +89,17 @@ public class DisplayActivity extends Activity {
 //    }
 
     //WebViewClient主要帮助WebView处理各种通知、请求事件
-//    private WebViewClient webViewClient = new WebViewClient() {
-//        @Override
-//        public void onPageFinished(WebView view, String url) {//页面加载完成
-//            progressBar.setVisibility(View.GONE);
-//            nContent.setVisibility(View.GONE);
-//        }
-//        @Override
-//        public void onPageStarted(WebView view, String url, Bitmap favicon) {//页面开始加载
-//            progressBar.setVisibility(View.VISIBLE);
-//            nContent.setText("正在加载...");
-//            nContent.setVisibility(View.VISIBLE);
-//        }
-//    };
+    private WebViewClient webViewClient = new WebViewClient() {
+        @Override
+        public void onPageFinished(WebView view, String url) {//页面加载完成
+            progressBar.setVisibility(View.GONE);
+            nContent.setVisibility(View.GONE);
+        }
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {//页面开始加载
+            progressBar.setVisibility(View.VISIBLE);
+            nContent.setText("正在加载...");
+            nContent.setVisibility(View.VISIBLE);
+        }
+    };
 }
