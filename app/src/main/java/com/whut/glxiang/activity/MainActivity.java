@@ -21,7 +21,8 @@ import android.widget.Toast;
 import com.whut.glxiang.adapter.MyRecyclerAdapter;
 import com.whut.glxiang.adapter.SpinerAdapter;
 import com.whut.glxiang.R;
-import com.whut.glxiang.api.PushItemBeans;
+//import com.whut.glxiang.api.PushItemBeans;
+import com.whut.glxiang.model.PushMessage;
 import com.whut.glxiang.util.SpinerPopWindow;
 
 import java.util.ArrayList;
@@ -37,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements  SpinerAdapter.IO
 //    private List<String> mTitles;
 //    private List<String> mContents;
     private MyRecyclerAdapter recycleAdapter;
-    private PushItemBeans pushItem;
+   // private PushItemBeans pushItem;
+    private PushMessage pushMessage;
 
     private List<String> ListType = new ArrayList<String>();  //类型列表
     private SpinerAdapter Adapter;
@@ -124,12 +126,18 @@ public class MainActivity extends AppCompatActivity implements  SpinerAdapter.IO
             @Override
             public void onClick(int position) {
                 Toast.makeText(MainActivity.this,"onClick事件       您点击了第："+position+"个Item",Toast.LENGTH_SHORT).show();
-                pushItem = recycleAdapter.getList(type,position);
+                pushMessage = recycleAdapter.getListItem(type,position);
                 Intent intent1 = new Intent(MainActivity.this, DisplayActivity.class);
-                intent1.putExtra("title", pushItem.getTitle());
-                intent1.putExtra("content", pushItem.getContent());
+                intent1.putExtra("title", pushMessage.getTitle());
+                intent1.putExtra("content", pushMessage.getContent());
                 intent1.putExtra("messageType",type);
                 startActivity(intent1);
+//                pushItem = recycleAdapter.getList(type,position);
+//                Intent intent1 = new Intent(MainActivity.this, DisplayActivity.class);
+//                intent1.putExtra("title", pushItem.getTitle());
+//                intent1.putExtra("content", pushItem.getContent());
+//                intent1.putExtra("messageType",type);
+//                startActivity(intent1);
             }
         });
     }

@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.whut.glxiang.R;
-import com.whut.glxiang.util.PushDatabaseHelper;
+//import com.whut.glxiang.util.PushDatabaseHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

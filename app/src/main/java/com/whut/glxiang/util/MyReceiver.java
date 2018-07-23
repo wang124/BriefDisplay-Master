@@ -46,7 +46,7 @@ public class MyReceiver extends BroadcastReceiver {
     private String linkAds;//跳转链接地址
     private String extra;//额外字段
     private String receiveTime;//接收消息时间
-    private PushDatabaseHelper pdbHelper;
+    //private PushDatabaseHelper pdbHelper;
     private LocalBroadcastManager localBroadcastManager;
     private int count = 0;//未读消息数量
 
@@ -54,7 +54,7 @@ public class MyReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         Bundle bundle = intent.getExtras();
-        pdbHelper = new PushDatabaseHelper(context, "message_record.db", null, 1);
+      //  pdbHelper = new PushDatabaseHelper(context, "message_record.db", null, 1);
 
         //设置默认图标
         CustomPushNotificationBuilder builder = new CustomPushNotificationBuilder(context,
@@ -109,38 +109,38 @@ public class MyReceiver extends BroadcastReceiver {
             Date date = new Date();//获得系统当前的时间
             SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
             receiveTime = sDateFormat.format(date);
-
-            SQLiteDatabase db = pdbHelper.getWritableDatabase();
-            //实例化常量值
-            ContentValues values = new ContentValues();
-            //添加图标
-            values.put("iconCode", iconCode);
-            //添加标题
-            values.put("title", title);
-            //添加消息
-            values.put("content", content);
-            //添加消息类型
-            values.put("messageType", messageType);
-            //添加url
-            values.put("linkAds", linkAds);
-            //添加date
-            values.put("receive_time", receiveTime);
-            //是否已读
-            values.put("isRead", false);
-            //是否需要删除
-            values.put("isDelete", false);
-            switch (messageType){
-                case 1:
-                    db.insert("push_message", null, values);//安全简报国际民航
-                    break;
-                case 2:
-                    db.insert("push_message2", null, values);//安全简报国际民航
-                    break;
-                    default:
-                        db.insert("push_message", null, values);//安全简报国际民航
-                        break;
-            }
-            db.close();
+            DatabaseOperation.insertMessage(iconCode,title,content,messageType,linkAds,receiveTime,false,false);
+//            SQLiteDatabase db = pdbHelper.getWritableDatabase();
+//            //实例化常量值
+//            ContentValues values = new ContentValues();
+//            //添加图标
+//            values.put("iconCode", iconCode);
+//            //添加标题
+//            values.put("title", title);
+//            //添加消息
+//            values.put("content", content);
+//            //添加消息类型
+//            values.put("messageType", messageType);
+//            //添加url
+//            values.put("linkAds", linkAds);
+//            //添加date
+//            values.put("receive_time", receiveTime);
+//            //是否已读
+//            values.put("isRead", false);
+//            //是否需要删除
+//            values.put("isDelete", false);
+//            switch (messageType){
+//                case 1:
+//                    db.insert("push_message", null, values);//安全简报国际民航
+//                    break;
+//                case 2:
+//                    db.insert("push_message2", null, values);//安全简报国际民航
+//                    break;
+//                    default:
+//                        db.insert("push_message", null, values);//安全简报国际民航
+//                        break;
+//            }
+//            db.close();
             /**
              * 扫描数据库，获取未读消息数量
              */
