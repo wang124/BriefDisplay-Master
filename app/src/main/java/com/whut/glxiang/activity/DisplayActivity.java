@@ -2,21 +2,21 @@ package com.whut.glxiang.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.whut.glxiang.R;
-//import com.whut.glxiang.util.PushDatabaseHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+//import com.whut.glxiang.util.PushDatabaseHelper;
 public class DisplayActivity extends Activity {
     private String title;
     private String content;
@@ -28,6 +28,8 @@ public class DisplayActivity extends Activity {
     TextView nContent;
     @BindView(R.id.urlview)
     WebView webView;
+    @BindView(R.id.back)
+    ImageView backView;
 
 
     @Override
@@ -35,6 +37,14 @@ public class DisplayActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notification_display);
         ButterKnife.bind(this);
+        backView.setVisibility(View.VISIBLE);
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        };
+        backView.setOnClickListener(onClickListener);
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("bundle");
        // webView = (WebView) findViewById(R.id.urlview);
