@@ -30,6 +30,8 @@ public class DisplayActivity extends Activity {
     WebView webView;
     @BindView(R.id.back)
     ImageView backView;
+    @BindView(R.id.setting)
+    TextView setting;
 
 
     @Override
@@ -44,6 +46,7 @@ public class DisplayActivity extends Activity {
                 finish();
             }
         };
+        setting.setVisibility(View.GONE);
         backView.setOnClickListener(onClickListener);
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("bundle");
