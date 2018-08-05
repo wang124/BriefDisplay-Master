@@ -92,12 +92,22 @@ public class BaseViewActivity extends Activity implements  SpinerAdapter.IOnItem
                 .getSystemService(Context.WINDOW_SERVICE);
         width = wm.getDefaultDisplay().getWidth()/4;
         ButterKnife.bind(this);
-        getPermission();
         localBroadcastManager = LocalBroadcastManager.getInstance(this);//获取实例
         intentFilter = new IntentFilter();
         intentFilter.addAction("com.whut.glxiang.activity.BaseViewActivity.LOCAL_BROADCAST");
         localReceiver = new ExitReceiver();
         localBroadcastManager.registerReceiver(localReceiver, intentFilter);//注册本地广播监听器
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                getPermission();
+            }
+        }.start();
     }
     private void getPermission() {
         int hasWriteContactsPermission = ContextCompat.checkSelfPermission(BaseViewActivity.this,
