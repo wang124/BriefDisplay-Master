@@ -1,14 +1,22 @@
 package com.whut.glxiang.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.whut.glxiang.R;
@@ -17,10 +25,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 //import com.whut.glxiang.util.PushDatabaseHelper;
-public class DisplayActivity extends Activity {
+public class DisplayActivity extends Activity implements View.OnTouchListener {
     private String title;
     private String content;
-    private ProgressBar progressBar;
+    private String url=null;
+    private GestureDetector mGestureDetector;
     //private PushDatabaseHelper pdbHelper;
     @BindView(R.id.top_title)
     TextView nTitle;
@@ -32,6 +41,8 @@ public class DisplayActivity extends Activity {
     ImageView backView;
     @BindView(R.id.setting)
     TextView setting;
+    @BindView(R.id.progressbar)
+    ProgressBar progressBar;
 
 
     @Override
@@ -55,24 +66,52 @@ public class DisplayActivity extends Activity {
         int type = intent.getIntExtra("messageType", 0);
         title = intent.getStringExtra("title");
         content = intent.getStringExtra("content");
+        url = intent.getStringExtra("linkAds");
         switch (type) {
             case 1:
-                nTitle.setText(title);
-                nContent.setVisibility(View.VISIBLE);
-                nContent.setText(content);
+                if(url==null){
+                    nTitle.setText(title);
+                    nContent.setVisibility(View.VISIBLE);
+                    nContent.setText(content);
+                }else {
+                    nContent.setVisibility(View.GONE);
+                    nTitle.setText(title);
+                    webView.setVisibility(View.VISIBLE);
+
+                    webView.setWebViewClient(webViewClient);
+                    WebSettings settings = webView.getSettings();
+                    webView.getSettings().setJavaScriptEnabled(true);
+                    String ua = webView.getSettings().getUserAgentString();
+                    System.out.print("+++++++++"+ua);
+                    webView.getSettings().setUserAgentString(ua);
+                   // webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+                    webView.loadUrl(url);//加载url
+                    mGestureDetector=new GestureDetector(new gestureListener());
+                    webView.setOnTouchListener(this);
+                }
+
                 break;
             case 2:
-                nTitle.setText(title);
-                nContent.setVisibility(View.VISIBLE);
-                nContent.setText(content);
-                break;
+                if(url==null){
+                    nTitle.setText(title);
+                    nContent.setVisibility(View.VISIBLE);
+                    nContent.setText(content);
+                }else {
+                    nContent.setVisibility(View.GONE);
+                    nTitle.setText(title);
+                    webView.setVisibility(View.VISIBLE);
+                    WebSettings settings = webView.getSettings();
+                    String ua = webView.getSettings().getUserAgentString();
+                    System.out.print("+++++++++"+ua);
+                    settings.setUserAgentString(ua);
+                    webView.setWebViewClient(webViewClient);
+                    webView.setWebChromeClient(webChromeClient);
+                    webView.loadUrl(url);//加载url
+                    mGestureDetector=new GestureDetector(new gestureListener());
+                    webView.setOnTouchListener(this);
+                }
             case 3:
-                String title2 = intent.getStringExtra("title");
-                nTitle.setText(title2);
-                webView.setVisibility(View.VISIBLE);
-                String url = intent.getStringExtra("linkAds");
-                webView.setWebViewClient(webViewClient);
-                webView.loadUrl(url);//加载url
+
                 break;
             default:
                 break;
@@ -100,7 +139,37 @@ public class DisplayActivity extends Activity {
 //        }
 //        db.close();
 //    }
+//WebChromeClient主要辅助WebView处理Javascript的对话框、网站图标、网站title、加载进度等
+    private WebChromeClient webChromeClient=new WebChromeClient(){
+    //不支持js的alert弹窗，需要自己监听然后通过dialog弹窗
+    @Override
+    public boolean onJsAlert(WebView webView, String url, String message, JsResult result) {
+//        AlertDialog.Builder localBuilder = new AlertDialog.Builder(webView.getContext());
+//        localBuilder.setMessage(message).setPositiveButton("确定",null);
+//        localBuilder.setCancelable(false);
+//        localBuilder.create().show();
 
+        //注意:
+        //必须要这一句代码:result.confirm()表示:
+        //处理结果为确定状态同时唤醒WebCore线程
+        //否则不能继续点击按钮
+        result.confirm();
+        return true;
+    }
+
+    //获取网页标题
+    @Override
+    public void onReceivedTitle(WebView view, String title) {
+        super.onReceivedTitle(view, title);
+        Log.i("ansen","网页标题:"+title);
+    }
+
+    //加载进度回调
+    @Override
+    public void onProgressChanged(WebView view, int newProgress) {
+        progressBar.setProgress(newProgress);
+    }
+};
     //WebViewClient主要帮助WebView处理各种通知、请求事件
     private WebViewClient webViewClient = new WebViewClient() {
         @Override
@@ -115,4 +184,42 @@ public class DisplayActivity extends Activity {
             nContent.setVisibility(View.VISIBLE);
         }
     };
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return mGestureDetector.onTouchEvent(event);
+    }
+
+    private class gestureListener implements GestureDetector.OnGestureListener{
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public void onShowPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            return false;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            return false;
+        }
+    }
 }

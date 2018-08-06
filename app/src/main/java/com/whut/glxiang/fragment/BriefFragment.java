@@ -4,8 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -83,6 +85,7 @@ public class BriefFragment extends DefaultFragment{
                 //Toast.makeText(context,"onLongClick事件       您点击了第："+position+"个Item",Toast.LENGTH_SHORT).show();
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(int position) {
                 //Toast.makeText(context,"onClick事件       您点击了第："+position+"个Item",Toast.LENGTH_SHORT).show();
@@ -92,7 +95,8 @@ public class BriefFragment extends DefaultFragment{
                     Intent intent1 = new Intent(context, DisplayActivity.class);
                     intent1.putExtra("title", pushMessage.getTitle());
                     intent1.putExtra("content", pushMessage.getContent());
-                    intent1.putExtra("messageType",type);
+                    intent1.putExtra("messageType",pushMessage.getMessageType());
+                    intent1.putExtra("linkAds",pushMessage.getLinkAds());
                     startActivity(intent1);
                 }else{
                     Toast.makeText(getContext(), "请勿快速点击", Toast.LENGTH_SHORT).show();

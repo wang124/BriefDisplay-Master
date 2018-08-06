@@ -27,6 +27,7 @@
             android:progress="0"
             android:visibility="gone" />
         <ScrollView
+            android:id="@+id/scroll_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -38,6 +39,8 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:visibility="gone" />
+
+
         </ScrollView>
 
 
