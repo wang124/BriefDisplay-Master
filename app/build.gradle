@@ -29,17 +29,25 @@ android {
 
     }
     signingConfigs {
-        release {
+        debug {
             keyAlias '信阳航空'
             keyPassword 'xinyang'
-            storePassword 'xinyanghangkong'
             storeFile file('/home/lexin/Extra/Edu/xinyang.jks')
+            storePassword 'xinyanghangkong'
+        }
+        release {
         }
     }
     buildTypes {
         release {
             minifyEnabled false //是否混淆
+            debuggable true
             signingConfig  signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false //是否混淆
+            signingConfig  signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

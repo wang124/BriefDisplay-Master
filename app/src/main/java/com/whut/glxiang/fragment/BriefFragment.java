@@ -18,6 +18,7 @@ import com.whut.glxiang.R;
 import com.whut.glxiang.activity.DisplayActivity;
 import com.whut.glxiang.adapter.MyRecyclerAdapter;
 import com.whut.glxiang.model.PushMessage;
+import com.whut.glxiang.util.DoubleClickCheck;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,12 +86,17 @@ public class BriefFragment extends DefaultFragment{
             @Override
             public void onClick(int position) {
                 //Toast.makeText(context,"onClick事件       您点击了第："+position+"个Item",Toast.LENGTH_SHORT).show();
-                pushMessage = recycleAdapter.getListItem(type,position);
-                Intent intent1 = new Intent(context, DisplayActivity.class);
-                intent1.putExtra("title", pushMessage.getTitle());
-                intent1.putExtra("content", pushMessage.getContent());
-                intent1.putExtra("messageType",type);
-                startActivity(intent1);
+                if (!DoubleClickCheck.isFastDoubleClick()){
+                    DoubleClickCheck.setLastClickTime(DoubleClickCheck.setCurrentTime().getTime());
+                    pushMessage = recycleAdapter.getListItem(type,position);
+                    Intent intent1 = new Intent(context, DisplayActivity.class);
+                    intent1.putExtra("title", pushMessage.getTitle());
+                    intent1.putExtra("content", pushMessage.getContent());
+                    intent1.putExtra("messageType",type);
+                    startActivity(intent1);
+                }else{
+                    Toast.makeText(getContext(), "请勿快速点击", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
